@@ -1,0 +1,45 @@
+.switch-filter {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 0px 5px;
+  width: 150px;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  color: black;
+}
+
+.switch-filter .filter-popular-active {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  background-color: rgb(41, 3, 94);
+  transition: all 0.5s ease;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#today-filter-popular:checked ~ .filter-popular-active {
+  transform: translateX(0px);
+}
+
+#today-filter-popular:checked ~ .filter-popular-active::before {
+  content: "Today";
+}
+
+#this-week-filter-popular:checked ~ .filter-popular-active {
+  transform: translateX(75px);
+}
+
+#this-week-filter-popular:checked ~ .filter-popular-active::before {
+  content: "This Week";
+}

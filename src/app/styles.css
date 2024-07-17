@@ -1,0 +1,128 @@
+.wrapper-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .wrapper-nav {
+    position: relative;
+    display: flex;
+    gap: 0px 10px;
+  }
+}
+
+.wrapper-nav li {
+  display: flex;
+  align-items: center;
+  gap: 0px 8px;
+  color: rgb(199, 197, 197);
+  padding: 10px;
+  position: relative;
+}
+
+.wrapper-nav li:hover {
+  color: white;
+}
+
+.drp-dwn-item {
+  display: none;
+  background-color: #1f2937;
+  border: 1px solid #2f3f55;
+  padding: 10px 0px;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+.wrapper-nav li:hover ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  max-height: 30vh;
+  width: max-content;
+}
+
+.wrapper-nav li:hover svg {
+  transform: rotate(180deg);
+  transition: 0.3s;
+}
+
+.drp-dwn-item li {
+  border-radius: 10px;
+}
+
+.drp-dwn-item li a {
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: 155px;
+}
+
+.drp-dwn-item li a:hover {
+  background-color: #8bbafb;
+  color: black;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  position: relative;
+  background-color: #1f2937;
+  color: white;
+}
+
+.swap-rotate input {
+  visibility: hidden;
+}
+
+.swap-off {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.swap-on {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.swap-rotate input:checked ~ .swap-on {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.swap-rotate input:checked ~ .swap-off {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.swap-rotate input:not(:checked) ~ .swap-on {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.swap-rotate input:not(:checked) ~ .swap-off {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.mobile-nav {
+  width: 100vw;
+  background-color: red;
+  display: none;
+}
+
+.swap-rotate input:checked ~ .mobile-nav {
+  display: flex;
+}

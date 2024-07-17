@@ -1,0 +1,31 @@
+.home-swiper {
+  height: 50vh;
+}
+
+.home-swiper .swiper-pagination {
+  display: flex;
+  justify-content: end;
+}
+
+.home-swiper .swiper-pagination-bullet {
+  background-color: white;
+}
+
+.home-swiper .swiper-pagination-bullet-active {
+  border-radius: 8px;
+  background-color: aqua;
+  /* add animation bullet to grow form left to right */
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-name: grow;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes grow {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 40px;
+  }
+}

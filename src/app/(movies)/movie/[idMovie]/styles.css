@@ -1,0 +1,12 @@
+/* --primaryColor: rgba(31.5, 31.5, 52.5, 1);
+background-image:  */
+
+.large-first {
+  background-position: left calc((50vw - 170px) - 340px) top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  background-clip: border-box;
+  background-origin: border-box;
+}

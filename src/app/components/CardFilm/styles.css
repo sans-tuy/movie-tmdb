@@ -1,0 +1,44 @@
+.image-preview .icon {
+  opacity: 0%;
+}
+
+.image-preview:hover .icon {
+  opacity: 100%;
+  transition: opacity 0.5s ease;
+  animation: scaling 0.5s ease;
+  cursor: pointer;
+}
+
+.desc-movie {
+  display: none;
+  z-index: 20;
+  position: absolute;
+  height: 150px;
+  width: 400px;
+  top: 25%;
+  left: 130px;
+  border-radius: 0.375rem;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.desc-movie p {
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+}
+
+.image-preview:hover .desc-movie {
+  display: block;
+}
+
+@keyframes scaling {
+  0% {
+    scale: 0.6;
+  }
+  100% {
+    scale: 1;
+  }
+}
