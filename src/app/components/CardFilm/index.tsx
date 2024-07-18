@@ -20,7 +20,7 @@ interface Props {
 export default function CardFilm(props: Props) {
   const { overview, poster_path, title, vote_average, id, mediaType } = props;
   return (
-    <Link href={`${mediaType}/${id}`}>
+    <Link href={`/${mediaType}/${id}`}>
       <div className="image-preview relative min-w-[150px] h-[225px] rounded-md">
         <Image
           src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}${poster_path}`}

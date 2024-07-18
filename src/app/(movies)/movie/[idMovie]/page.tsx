@@ -9,6 +9,7 @@ import CardPerson from "@/app/components/CardPerson";
 import Link from "next/link";
 import CardMoreFilm from "@/app/components/CardMoreFilm";
 import VideoElement from "@/app/components/VideoElement";
+import SectionRecommendationMovie from "@/app/components/SectionRecommendationMovie";
 
 async function getDetailMovie(idMovie: string) {
   const res = await fetch(
@@ -30,9 +31,6 @@ export default async function MovieDetail({
   params: { idMovie: string };
 }) {
   const detailMovie: IMovieDetails = await getDetailMovie(params.idMovie);
-  const genres = detailMovie.keywords?.keywords
-    ?.map((genre) => genre.name)
-    .join(", ");
   const countries = detailMovie.origin_country?.join(", ");
   const year = detailMovie?.release_date?.slice(0, 4) || "-";
   const vote = `(${detailMovie.vote_average.toFixed(1)} from
@@ -40,6 +38,7 @@ export default async function MovieDetail({
   const runTime = `${Math.floor(detailMovie.runtime / 60)}h ${
     detailMovie.runtime % 60
   }m`;
+  console.log(JSON.stringify(detailMovie.recommendations), "detailMovie");
 
   return (
     <div className="flex flex-col gap-y-10">
@@ -235,6 +234,7 @@ export default async function MovieDetail({
         srcVideo="https://data04.streamku.xyz/mv/han/64b-Bisikan-Setan-2024.mp4"
         posterPath={detailMovie.backdrop_path || ""}
       />
+      <SectionRecommendationMovie movies={detailMovie.recommendations} />
     </div>
   );
 }

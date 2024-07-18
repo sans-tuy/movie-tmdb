@@ -1,3 +1,4 @@
+import Footer from "@/app/footer";
 import Navbar from "@/app/navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,6 +19,7 @@ export default function MoviePageLayout({
     <section>
       <Navbar />
       {children}
+      <Footer />
     </section>
   );
 }

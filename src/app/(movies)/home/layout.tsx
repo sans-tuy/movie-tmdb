@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { useFormState, useFormStatus } from "react-dom";
 import Navbar from "@/app/navbar";
 import { useParams } from "next/navigation";
+import Footer from "@/app/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function HomeLayout({
     <section>
       <Navbar />
       {children}
+      <Footer />
     </section>
   );
 }

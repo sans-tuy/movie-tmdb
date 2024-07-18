@@ -98,7 +98,7 @@ export default async function Navbar() {
             />
           </svg>
         </label>
-        <label className="btn btn-circle swap-rotate">
+        <label className="block md:hidden btn btn-circle swap-rotate">
           {/* this hidden checkbox controls the state */}
           <input type="checkbox" id="nav-mobile-btn" />
 

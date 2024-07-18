@@ -8,17 +8,6 @@
   min-height: 400px;
 }
 
-.wrapper-video-element-main {
-  /* height: 800px;
-    border: 1px solid black;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 0 6rem;
-    min-height: 400px; */
-  background-color: aqua;
-  z-index: -1;
-}
-
 .wrapper-video-element .icon-play-video {
   position: absolute;
   top: 50%;
@@ -34,22 +23,86 @@
   position: absolute;
   bottom: 5%;
   left: 0;
+  z-index: 20;
 }
 
 .wrapper-video-element:hover .seekbar-movie {
-  opacity: 1;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-name: opacity;
+  animation-timing-function: ease-in-out;
 }
 
-.fullscreen-movie {
+/* .fullscreen-movie {
   opacity: 0;
   position: absolute;
   bottom: 0;
   right: 1%;
   cursor: pointer;
+  z-index: 20;
 }
 
 .wrapper-video-element:hover .fullscreen-movie {
-  opacity: 1;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-name: opacity;
+  animation-timing-function: ease-in-out;
+} */
+
+.wrapper-left-control {
+  position: absolute;
+  bottom: 0;
+  left: 0.7rem;
+  display: flex;
+  gap: 0 0.5rem;
+  align-items: center;
+  opacity: 0;
+  z-index: 20;
+}
+
+.wrapper-video-element:hover .wrapper-left-control {
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-name: opacity;
+  animation-timing-function: ease-in-out;
+}
+
+.wrapper-right-control {
+  position: absolute;
+  bottom: 0;
+  right: 0.7rem;
+  display: flex;
+  gap: 0 0.5rem;
+  align-items: center;
+  opacity: 0;
+  z-index: 20;
+}
+
+.wrapper-video-element:hover .wrapper-right-control {
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-name: opacity;
+  animation-timing-function: ease-in-out;
+}
+
+.miniplayer-movie {
+  opacity: 0;
+}
+
+.wrapper-video-element:hover .miniplayer-movie {
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-name: opacity;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 #video-detail-mov {
