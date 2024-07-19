@@ -100,13 +100,15 @@ export default function SearchPage() {
       </div>
       <p>Page : {currPage}</p>
       <div className="flex flex-col items-center">
-        <Pagination
-          size="lg"
-          showControls
-          total={dataToRender?.total_pages || 0}
-          onChange={setCurrPage}
-          initialPage={currPage}
-        />
+        {dataToRender?.total_pages && (
+          <Pagination
+            size="lg"
+            showControls
+            total={dataToRender?.total_pages || 0}
+            onChange={setCurrPage}
+            page={currPage}
+          />
+        )}
       </div>
     </div>
   );
