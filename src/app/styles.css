@@ -126,3 +126,43 @@
 .swap-rotate input:checked ~ .mobile-nav {
   display: flex;
 }
+
+.searchbar {
+  position: relative;
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  display: hidden;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+  .searchbar {
+    display: flex;
+  }
+}
+
+.wrapper-searchbar-items {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: -19.5rem;
+  left: 0;
+  width: 15.6rem;
+  height: 300px;
+  overflow-y: scroll;
+  gap: 0.5rem;
+  z-index: 99;
+}
+
+.searchbar-items {
+  display: flex;
+  gap: 5px;
+  border: 1px solid black;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  height: 50px;
+  color: red;
+}

@@ -3,6 +3,7 @@
 import useSWR, { SWRResponse } from "swr";
 import { fetcher } from "../fetcher";
 import {
+  IListGenres,
   IListPopularMovie,
   IListPopularTvMovie,
 } from "@/app/api/movie/types/movie";
@@ -16,6 +17,11 @@ interface IGetPopularMovie {
 
 interface IGetFreeWatchMovie extends IGetPopularMovie {
   mediaType: "tv" | "movie";
+}
+
+interface IGetSearchMovie {
+  query: string;
+  page?: number;
 }
 
 function useGetPopularMovie(props: IGetPopularMovie) {
@@ -46,4 +52,36 @@ function useGetFreeWatchMovie(props: IGetFreeWatchMovie) {
   };
 }
 
-export { useGetPopularMovie, useGetFreeWatchMovie };
+function useGetGenres() {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_BASE_URL_APP}/api/movie/genres`,
+    fetcher
+  ) as SWRResponse<IListGenres, any>;
+
+  return {
+    genres: data,
+    isLoading,
+    isError: error,
+  };
+}
+
+function useGetSearchMovie(props: IGetSearchMovie) {
+  const { query, page = 1 } = props;
+  const { data, error, isLoading } = useSWR(
+    `api/movie/search?query=${query}&page=${page}`,
+    fetcher
+  ) as SWRResponse<IListPopularMovie, any>;
+
+  return {
+    movies: data,
+    isLoading,
+    isError: error,
+  };
+}
+
+export {
+  useGetPopularMovie,
+  useGetFreeWatchMovie,
+  useGetGenres,
+  useGetSearchMovie,
+};

@@ -1,17 +1,36 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import useDebounce from "./hooks/debounce";
+import { useGetGenres } from "./hooks/movie";
+import { useSearchNavbar } from "./hooks/tv_movie";
 import "./styles.css";
-import { IListGenres } from "./api/movie/types/movie";
 
-const getStaticProps = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL_APP}/api/movie/genres`
-  );
+export default function Navbar() {
+  const router = useRouter();
+  const [searchValue, setsearchValue] = useState("");
+  const debounceSearch = useDebounce(searchValue, 500);
 
-  return res.json();
-};
-export default async function Navbar() {
-  const genres: IListGenres = await getStaticProps();
+  const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setsearchValue(e.target.value);
+  };
+
+  const { results, isLoading } = useSearchNavbar({
+    searchKeyword: debounceSearch,
+  });
+  const { genres, isLoading: isLoadingGenres } = useGetGenres();
+
+  const handleKeydown = (e: any) => {
+    if (e.key === "Enter") {
+      setsearchValue("");
+      router.push(`/search?search=${searchValue}`);
+    }
+  };
+
   return (
     <>
       <nav className="relative top-0 left-0 right-0 bg-gray-800 py-8 px-4 lg:px-20 flex justify-between">
@@ -70,20 +89,25 @@ export default async function Navbar() {
               <a href="">Genres</a>
               <IoIosArrowDown color="white" />
               <ul className={`drp-dwn-item`}>
-                {genres.genres.map((genre) => (
-                  <li key={`list-nav-genre-${genre.id}`}>
-                    <a href="">{genre.name}</a>
-                  </li>
-                ))}
+                {!isLoadingGenres &&
+                  genres?.genres?.map((genre) => (
+                    <li key={`list-nav-genre-${genre.id}`}>
+                      <a href="">{genre.name}</a>
+                    </li>
+                  ))}
               </ul>
             </li>
           </ul>
         </div>
-        <label className="input bg-white rounded-xl py-2 px-4 input-bordered hidden md:flex items-center gap-2">
+        {/* search bar */}
+        <label className="searchbar">
           <input
+            value={searchValue}
+            onChange={handleChangeSearch}
             type="text"
             className="transition-all duration-300 grow w-24 focus:outline-none focus:w-48"
             placeholder="Search"
+            onKeyDown={handleKeydown}
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +121,32 @@ export default async function Navbar() {
               clipRule="evenodd"
             />
           </svg>
+          {!isLoading && results?.results && results?.results.length > 0 && (
+            <div className="wrapper-searchbar-items">
+              {results?.results?.slice(0, 3)?.map((result) => (
+                <Link
+                  key={`list-searchnav-result-${result.id}`}
+                  className="searchbar-items"
+                  href={`/${result.media_type}/${result.id}`}
+                >
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/${result?.backdrop_path}`}
+                    alt="img-search"
+                    width={50}
+                    height={50}
+                    quality={10}
+                    className="rounded-md"
+                  />
+                  <p className="text-xs line-clamp-2">
+                    {result.title || result.name} (
+                    {result.first_air_date || result.release_date})
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
         </label>
+        {/* navigation mobile */}
         <label className="block md:hidden btn btn-circle swap-rotate">
           {/* this hidden checkbox controls the state */}
           <input type="checkbox" id="nav-mobile-btn" />

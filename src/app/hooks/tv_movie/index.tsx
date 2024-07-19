@@ -23,4 +23,17 @@ function useGetTrendingTvMovie(props: IGetPopularMovie) {
   };
 }
 
-export { useGetTrendingTvMovie };
+function useSearchNavbar({ searchKeyword }: { searchKeyword: string }) {
+  const { data, error, isLoading } = useSWR(
+    `api/all/search?search=${searchKeyword}`,
+    fetcher
+  ) as SWRResponse<IListPopularTvMovie, any>;
+
+  return {
+    results: data,
+    isLoading,
+    isError: error,
+  };
+}
+
+export { useGetTrendingTvMovie, useSearchNavbar };
