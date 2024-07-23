@@ -1,12 +1,9 @@
-"use server";
-
 import Image from "next/image";
 import { IoIosArrowDown } from "react-icons/io";
+import { IGenre } from "./api/movie/types/detail-movie";
 import { ButtonSignOut } from "./components/ButtonSignOut";
 import SearchBar from "./components/SearchBar";
-import { useGetGenres } from "./hooks/movie";
 import "./styles.css";
-import { IGenre } from "./api/movie/types/detail-movie";
 
 export async function getGenres() {
   const res = await fetch(
@@ -79,46 +76,47 @@ export default async function Navbar() {
             <li>
               <a href="">Genres</a>
               <IoIosArrowDown color="white" />
-              {/* <ul className={`drp-dwn-item`}>
-                {genres?.map((genre: IGenre) => (
+              <ul className={`drp-dwn-item`}>
+                {genres?.genres?.map((genre: IGenre) => (
                   <li key={`list-nav-genre-${genre.id}`}>
                     <a href="">{genre.name}</a>
                   </li>
                 ))}
-              </ul> */}
+              </ul>
             </li>
           </ul>
         </div>
+        <div className="flex items-center gap-3">
+          <SearchBar />
+          <ButtonSignOut />
+          {/* navigation mobile */}
+          <label className="block md:hidden btn btn-circle swap-rotate">
+            {/* this hidden checkbox controls the state */}
+            <input type="checkbox" id="nav-mobile-btn" />
 
-        <SearchBar />
-        <ButtonSignOut />
-        {/* navigation mobile */}
-        <label className="block md:hidden btn btn-circle swap-rotate">
-          {/* this hidden checkbox controls the state */}
-          <input type="checkbox" id="nav-mobile-btn" />
+            {/* hamburger icon */}
+            <svg
+              className="swap-off fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              viewBox="0 0 512 512"
+            >
+              <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+            </svg>
 
-          {/* hamburger icon */}
-          <svg
-            className="swap-off fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 0 512 512"
-          >
-            <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-          </svg>
-
-          {/* close icon */}
-          <svg
-            className="swap-on fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24px"
-            height="24px"
-            viewBox="0 0 512 512"
-          >
-            <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
-          </svg>
-        </label>
+            {/* close icon */}
+            <svg
+              className="swap-on fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              viewBox="0 0 512 512"
+            >
+              <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+            </svg>
+          </label>
+        </div>
       </nav>
       <nav className="mobile-nav">
         <label className="input bg-white rounded-xl py-2 px-4 input-bordered flex items-center gap-2">

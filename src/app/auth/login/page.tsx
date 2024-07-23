@@ -1,6 +1,5 @@
-import { signIn, providerMap } from "@/auth";
+import { providerMap, signIn } from "@/auth";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 
 export default async function SignInPage() {
   return (
