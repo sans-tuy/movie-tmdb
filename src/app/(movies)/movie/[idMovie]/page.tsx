@@ -38,7 +38,6 @@ export default async function MovieDetail({
   const runTime = `${Math.floor(detailMovie.runtime / 60)}h ${
     detailMovie.runtime % 60
   }m`;
-  console.log(JSON.stringify(detailMovie.recommendations), "detailMovie");
 
   return (
     <div className="flex flex-col gap-y-10">

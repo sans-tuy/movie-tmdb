@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { useFormState, useFormStatus } from "react-dom";
-import Navbar from "@/app/navbar";
-import { useParams } from "next/navigation";
 import Footer from "@/app/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import Navbar from "@/app/navbar";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shoes Web",

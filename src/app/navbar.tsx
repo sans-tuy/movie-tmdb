@@ -1,35 +1,26 @@
-"use client";
+"use server";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import useDebounce from "./hooks/debounce";
+import { ButtonSignOut } from "./components/ButtonSignOut";
+import SearchBar from "./components/SearchBar";
 import { useGetGenres } from "./hooks/movie";
-import { useSearchNavbar } from "./hooks/tv_movie";
 import "./styles.css";
+import { IGenre } from "./api/movie/types/detail-movie";
 
-export default function Navbar() {
-  const router = useRouter();
-  const [searchValue, setsearchValue] = useState("");
-  const debounceSearch = useDebounce(searchValue, 500);
+export async function getGenres() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL_APP}/api/movie/genres`
+  );
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return data;
+}
 
-  const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setsearchValue(e.target.value);
-  };
-
-  const { results, isLoading } = useSearchNavbar({
-    searchKeyword: debounceSearch,
-  });
-  const { genres, isLoading: isLoadingGenres } = useGetGenres();
-
-  const handleKeydown = (e: any) => {
-    if (e.key === "Enter") {
-      setsearchValue("");
-      router.push(`/search?search=${searchValue}`);
-    }
-  };
+export default async function Navbar() {
+  const genres = await getGenres();
 
   return (
     <>
@@ -88,64 +79,19 @@ export default function Navbar() {
             <li>
               <a href="">Genres</a>
               <IoIosArrowDown color="white" />
-              <ul className={`drp-dwn-item`}>
-                {!isLoadingGenres &&
-                  genres?.genres?.map((genre) => (
-                    <li key={`list-nav-genre-${genre.id}`}>
-                      <a href="">{genre.name}</a>
-                    </li>
-                  ))}
-              </ul>
+              {/* <ul className={`drp-dwn-item`}>
+                {genres?.map((genre: IGenre) => (
+                  <li key={`list-nav-genre-${genre.id}`}>
+                    <a href="">{genre.name}</a>
+                  </li>
+                ))}
+              </ul> */}
             </li>
           </ul>
         </div>
-        {/* search bar */}
-        <label className="searchbar">
-          <input
-            value={searchValue}
-            onChange={handleChangeSearch}
-            type="text"
-            className="transition-all duration-300 grow w-24 focus:outline-none focus:w-48"
-            placeholder="Search"
-            onKeyDown={handleKeydown}
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="h-4 w-4 opacity-70"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
-          {!isLoading && results?.results && results?.results.length > 0 && (
-            <div className="wrapper-searchbar-items">
-              {results?.results?.slice(0, 3)?.map((result) => (
-                <Link
-                  key={`list-searchnav-result-${result.id}`}
-                  className="searchbar-items"
-                  href={`/${result.media_type}/${result.id}`}
-                >
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/${result?.backdrop_path}`}
-                    alt="img-search"
-                    width={50}
-                    height={50}
-                    quality={10}
-                    className="rounded-md"
-                  />
-                  <p className="text-xs line-clamp-2">
-                    {result.title || result.name} (
-                    {result.first_air_date || result.release_date})
-                  </p>
-                </Link>
-              ))}
-            </div>
-          )}
-        </label>
+
+        <SearchBar />
+        <ButtonSignOut />
         {/* navigation mobile */}
         <label className="block md:hidden btn btn-circle swap-rotate">
           {/* this hidden checkbox controls the state */}
@@ -194,58 +140,6 @@ export default function Navbar() {
             />
           </svg>
         </label>
-        {/* <ul className="wrapper-mobile-nav">
-          <li>
-            <a href="">Home</a>
-          </li>
-          <li>
-            Movies
-            <IoIosArrowDown color="white" />
-            <ul className={`drp-dwn-item`}>
-              <li>
-                <a href="">Populer</a>
-              </li>
-              <li>
-                <a href="">Now Playing</a>
-              </li>
-              <li>
-                <a href="">Top Rated</a>
-              </li>
-              <li>
-                <a href="">Upcoming</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            TV Series
-            <IoIosArrowDown color="white" />
-            <ul className={`drp-dwn-item`}>
-              <li>
-                <a href="">Popular</a>
-              </li>
-              <li>
-                <a href="">Airing Today</a>
-              </li>
-              <li>
-                <a href="">On The Air</a>
-              </li>
-              <li>
-                <a href="">Top Trend</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            Genres
-            <IoIosArrowDown color="white" />
-            <ul className={`drp-dwn-item`}>
-              {genres.genres.map((genre) => (
-                <li key={`list-nav-genre-${genre.id}`}>
-                  <a href="">{genre.name}</a>
-                </li>
-              ))}
-            </ul>
-          </li>
-        </ul> */}
       </nav>
     </>
   );

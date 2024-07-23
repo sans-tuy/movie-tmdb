@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "e-commerce to sell shoes",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

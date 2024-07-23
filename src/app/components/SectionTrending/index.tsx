@@ -1,12 +1,11 @@
 "use client";
 
-import { useGetPopularMovie } from "@/app/hooks/movie";
+import { useGetTrendingTvMovie } from "@/app/hooks/tv_movie";
+import { useState } from "react";
 import CardFilm from "../CardFilm";
 import CardMoreFilm from "../CardMoreFilm";
 import SkeletonCardFilm from "../SkeletonCardFilm";
 import "./styles.css";
-import { useGetTrendingTvMovie } from "@/app/hooks/tv_movie";
-import { useState } from "react";
 
 export default function SectionTrending() {
   const [timeWindow, setTimeWindow] = useState<"day" | "week">("day");

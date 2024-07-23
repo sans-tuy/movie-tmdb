@@ -6,5 +6,10 @@ declare namespace NodeJS {
     readonly TMDB_API_READ_ACCESS_TOKEN_AUTH: string;
     readonly TMDB_API_READ_ACCESS_TOKEN: string;
     readonly NEXT_PUBLIC_BASE_URL: string;
+    readonly PROJECT_NAME: string;
+    readonly PROJECT_ID: string;
+    readonly AUTH_GOOGLE_ID: string;
+    readonly AUTH_GOOGLE_SECRET: string;
+    readonly AUTH_SECRET: string;
   }
 }
