@@ -1,6 +1,11 @@
+import { auth } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export const GET = auth(async function GET(req) {
+  if (!req.auth) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
   const timeWindow = req.nextUrl.searchParams.get("time_window");
   const language = req.nextUrl.searchParams.get("language") || "en-US";
 
@@ -23,4 +28,4 @@ export async function GET(req: NextRequest) {
       { status: res.status }
     );
   }
-}
+});

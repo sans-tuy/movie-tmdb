@@ -1,6 +1,11 @@
+import { auth } from "@/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export const GET = auth(async function GET(req) {
+  if (!req.auth) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
   const page = req.nextUrl.searchParams.get("page");
   const query = req.nextUrl.searchParams.get("query");
   const res = await fetch(
@@ -22,4 +27,4 @@ export async function GET(req: NextRequest) {
       { status: data.status }
     );
   }
-}
+});

@@ -1,6 +1,11 @@
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export const GET = auth(async function GET(req) {
+  if (!req.auth) {
+    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/genre/tv/list?language=en`,
     {
@@ -19,4 +24,4 @@ export async function GET() {
       { status: 400 }
     );
   }
-}
+});

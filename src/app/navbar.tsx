@@ -4,14 +4,22 @@ import { IGenre } from "./api/movie/types/detail-movie";
 import { ButtonSignOut } from "./components/ButtonSignOut";
 import SearchBar from "./components/SearchBar";
 import "./styles.css";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export async function getGenres() {
+  const session = await auth();
+  if (!session) {
+    redirect("/auth/login");
+  }
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL_APP}/api/movie/genres`
   );
   const data = await res.json();
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    console.log(res);
+
+    throw new Error("Failed to fetch data genres");
   }
   return data;
 }
