@@ -1,9 +1,9 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import type { Provider } from "next-auth/providers";
+import Credentials from "next-auth/providers/credentials";
 import google from "next-auth/providers/google";
-import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
+import { connectToMongoDB } from "./app/lib/db";
+import User from "./app/models/user";
 
 class InvalidLoginError extends CredentialsSignin {
   code = "Invalid identifier or password";
@@ -28,14 +28,18 @@ const providers: Provider[] = [
       password: { label: "Password", type: "password" },
     },
     async authorize(c) {
-      if (c?.password !== "password" && c?.email !== "9k0fX@example.com") {
+      await connectToMongoDB();
+      const user = await User.findOne({
+        email: c?.email,
+        password: c?.password,
+      });
+      if (!user) {
         throw new InvalidLoginError();
       }
-
       return {
-        id: "1",
-        name: "Fill Murray",
-        email: "fill@murray.com",
+        id: user._id,
+        name: user.name || "user unnamed",
+        email: user.email,
         image: "https://source.boringavatars.com/marble/120",
       };
     },
@@ -68,6 +72,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (new URL(url).origin === baseUrl) return url;
 
       return baseUrl;
+    },
+    signIn: async ({ user, credentials }) => {
+      if (user) {
+        // check is using oauth strategy instead of credential
+        if (!credentials) {
+          const userAlreadyExist = await User.findOne({
+            email: user?.email,
+          });
+          // create user if not exist on db
+          if (!userAlreadyExist) {
+            const newUser = await User.create({
+              email: user?.email,
+              provider: "google",
+            });
+            await newUser.save();
+          }
+        }
+        return true;
+      }
+      return false;
     },
   },
 });

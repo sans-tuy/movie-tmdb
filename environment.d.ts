@@ -11,5 +11,6 @@ declare namespace NodeJS {
     readonly AUTH_GOOGLE_ID: string;
     readonly AUTH_GOOGLE_SECRET: string;
     readonly AUTH_SECRET: string;
+    readonly MONGODB_URI: string;
   }
 }

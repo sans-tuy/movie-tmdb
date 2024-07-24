@@ -31,6 +31,10 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    esmExternals: "loose", // <-- add this
+    serverComponentsExternalPackages: ["mongoose"], // <-- and this
+  },
   // used for redirect to login page when user access to url '/'
   async redirects() {
     return [

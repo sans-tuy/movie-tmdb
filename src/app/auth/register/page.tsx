@@ -1,104 +1,87 @@
+import { connectToMongoDB } from "@/app/lib/db";
+import User from "@/app/models/user";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Register() {
+export default async function Register() {
   return (
-    <div className=" flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Image
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg"
-          width={600}
-          height={600}
-          alt="Your Company"
-        />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Create new account
-        </h2>
-      </div>
-
-      <div className="border-slate-200 border rounded-md p-16 mt-10 lg:max-w-[600px] sm:mx-auto sm:w-full">
-        <form className="space-y-6 " action="#" method="POST">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
+    <div className="flex overflow-hidden relative w-full h-full">
+      <Image
+        src="/login_pattern.svg"
+        alt="Pattern Background"
+        className="object-cover fixed top-0 left-0 w-screen h-screen bg-white -z-10"
+        height={150}
+        width={150}
+      />
+      <div
+        aria-label="Slate cover background"
+        className="absolute left-0 top-0 z-10 flex h-[275%] w-[150%] translate-x-[-70%] translate-y-[-28%] rotate-[22deg] items-center bg-zinc-900 md:translate-y-[-15%] md:rotate-[11deg]"
+      ></div>
+      <div className="h-dvh z-20 flex w-full items-center justify-center md:ml-[15%] md:w-[22rem]">
+        <div className="flex flex-col justify-center items-center w-80 text-xl">
+          <h2 className="flex items-center mb-4 space-x-2 text-3xl font-light text-zinc-600">
+            <Image
+              src={
+                "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
+              }
+              alt="tmdb logo"
+              height={70}
+              width={70}
+            />
+            <span className="text-4xl font-medium text-white">Clone</span>
+          </h2>
+          <div className="flex flex-col gap-2 p-6 m-8 w-full bg-white rounded shadow-lg">
+            <form
+              className="[&>div]:last-of-type:hidden"
+              action={async (formData) => {
+                "use server";
+                await connectToMongoDB();
+                const user = await User.findOne({
+                  email: formData.get("email"),
+                });
+                if (user) {
+                  return;
+                }
+                const newUser = await User.create({
+                  email: formData.get("email"),
+                  password: formData.get("password"),
+                });
+                await newUser.save();
+                return redirect("/auth/login");
+              }}
             >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label className="text-base font-light text-neutral-800">
+                Email
+                <input
+                  className="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-zinc-500"
+                  required
+                  data-1p-ignore
+                  placeholder="email"
+                  name="email"
+                  type="email"
+                />
+              </label>
+              <label className="text-base font-light text-neutral-800">
                 Password
+                <input
+                  className="block flex-1 p-3 w-full font-normal rounded-md border border-gray-200 transition sm:text-sm placeholder:font-light placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-zinc-500"
+                  required
+                  data-1p-ignore
+                  placeholder="password"
+                  name="password"
+                  type="password"
+                />
               </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+              <button
+                type="submit"
+                className="flex justify-center items-center px-4 mt-2 space-x-2 w-full h-12 text-base font-light text-white rounded transition focus:ring-2 focus:ring-offset-2 focus:outline-none bg-zinc-800 hover:bg-zinc-900 focus:ring-zinc-800"
               >
-                Confirm Password
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                autoComplete="confirm-password"
-                required
-                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+                <span>Register</span>
+              </button>
+            </form>
           </div>
-
-          <div>
-            <Link
-              href={"/auth/login"}
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Create Account
-            </Link>
-          </div>
-        </form>
-
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Already have an account?
-          <Link
-            href={"/auth/login"}
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            Login here
-          </Link>
-        </p>
+        </div>
       </div>
     </div>
   );

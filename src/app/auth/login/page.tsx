@@ -36,14 +36,11 @@ export default async function SignInPage() {
                 action={async (formData) => {
                   "use server";
                   if (provider.id === "credentials") {
-                    try {
-                      await signIn(provider.id, {
-                        redirectTo: "/home",
-                        password: formData.get("password"),
-                      });
-                    } catch (error) {
-                      return null;
-                    }
+                    await signIn(provider.id, {
+                      redirectTo: "/home",
+                      password: formData.get("password"),
+                      email: formData.get("email"),
+                    });
                   } else {
                     await signIn(provider.id, { redirectTo: "/home" });
                   }
