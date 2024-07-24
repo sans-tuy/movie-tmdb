@@ -1,3 +1,4 @@
+import { saltHashPwd } from "@/app/helpers/SaltHashPwd";
 import { connectToMongoDB } from "@/app/lib/db";
 import User from "@/app/models/user";
 import Image from "next/image";
@@ -43,9 +44,12 @@ export default async function Register() {
                 if (user) {
                   return;
                 }
+                const password = await saltHashPwd(
+                  formData.get("password") as string
+                );
                 const newUser = await User.create({
                   email: formData.get("email"),
-                  password: formData.get("password"),
+                  password,
                 });
                 await newUser.save();
                 return redirect("/auth/login");

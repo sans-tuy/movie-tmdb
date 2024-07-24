@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import google from "next-auth/providers/google";
 import { connectToMongoDB } from "./app/lib/db";
 import User from "./app/models/user";
+import { comparePwd } from "./app/helpers/SaltHashPwd";
 
 class InvalidLoginError extends CredentialsSignin {
   code = "Invalid identifier or password";
@@ -31,9 +32,15 @@ const providers: Provider[] = [
       await connectToMongoDB();
       const user = await User.findOne({
         email: c?.email,
-        password: c?.password,
       });
       if (!user) {
+        throw new InvalidLoginError();
+      }
+      const isPwdMatch = await comparePwd(
+        c?.password as string,
+        user?.password
+      );
+      if (!isPwdMatch) {
         throw new InvalidLoginError();
       }
       return {

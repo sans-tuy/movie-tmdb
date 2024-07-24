@@ -1,8 +1,8 @@
 // Importing mongoose library along with Connection type from it
-import mongoose, { Connection } from "mongoose";
+// import mongoose, { Connection } from "mongoose";
 
 // Declaring a variable to store the cached database connection
-let cachedConnection: Connection | null = null;
+let cachedConnection: any = null;
 
 // Function to establish a connection to MongoDB
 export async function connectToMongoDB() {
@@ -13,6 +13,7 @@ export async function connectToMongoDB() {
   }
   try {
     // If no cached connection exists, establish a new connection to MongoDB
+    const mongoose = require("mongoose");
     const cnx = await mongoose.connect(process.env.MONGODB_URI!);
     // Cache the connection for future use
     cachedConnection = cnx.connection;

@@ -33,7 +33,11 @@ const nextConfig = {
   },
   experimental: {
     esmExternals: "loose", // <-- add this
-    serverComponentsExternalPackages: ["mongoose"], // <-- and this
+    serverComponentsExternalPackages: ["mongoose", "bcrypt"], // <-- and this
+  },
+  webpack: (config) => {
+    config.externals = [...config.externals, "bcrypt", "mongoose"];
+    return config;
   },
   // used for redirect to login page when user access to url '/'
   async redirects() {
